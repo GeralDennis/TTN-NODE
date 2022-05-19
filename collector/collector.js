@@ -2,7 +2,7 @@
 // connects to personal TTN feed using Node.js SDK
 // stores data in mongodb database
 // Author - Nic Burkinshaw nic@thinnovation.co.uk
-
+const { insertDocument } = require('./mongo.js');
 var express = require("express");
 
 // MQTT setup
@@ -39,11 +39,8 @@ client.on('message', function(topic, message) {
     console.log("Data from TTN: ", getDataFromTTN.uplink_message.decoded_payload);
     var messageObject = getDataFromTTN.uplink_message.decoded_payload;
     //globalMQTT = Buffer.from(getFrmPayload, 'base64').toString();
+    insertDocument(messageObject)
 });
-
-const { insertDocument } = require('./mongo.js');
-
-insertDocument(messageObject)
 
 
 function exitHandler(options, err) {
